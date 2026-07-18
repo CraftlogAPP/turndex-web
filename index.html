@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TurnDex — Sportgeräte &amp; Sporthallen nach DGUV-I 202-044 (DIN EN 913) rechtssicher prüfen</title>
+  <meta name="description" content="Sportgeräte und Sporthallen nach DGUV-Information 202-044 &amp; DIN EN 913 ff. rechtssicher prüfen und dokumentieren: Geräte-Inventar mit EN-Kategorien (Tore, Reck, Barren, Matten, Deckenanlagen), geführte 12-Punkte-Checkliste inkl. Kippsicherung, Ampelverfahren mit Geräte-Sperrung, PDF-Prüfbericht mit GPS-Stempel &amp; Fotos. Für Kommunen, Schulträger, Vereine, Hallenbetreiber und Prüfdienste." />
+  <meta name="theme-color" content="#151A0E" />
+  <!-- seo:start -->
+  <link rel="icon" type="image/png" href="/turndex-icon.png" />
+  <link rel="canonical" href="https://turndex.dexware.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TurnDex" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:title" content="TurnDex — Sportgeräte. Geprüft. Dokumentiert. Rechtssicher." />
+  <meta property="og:description" content="Jährliche Sachkundigen-Prüfung nach DGUV-I 202-044 &amp; DIN EN 913 — Kippsicherung im Blick, Ampelverfahren mit Geräte-Sperrung, PDF-Prüfbericht mit GPS-Stempel." />
+  <meta property="og:url" content="https://turndex.dexware.app/" />
+  <meta property="og:image" content="https://turndex.dexware.app/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="TurnDex — Sportgeräte. Geprüft. Dokumentiert. Rechtssicher." />
+  <meta name="twitter:description" content="Jährliche Sachkundigen-Prüfung nach DGUV-I 202-044 &amp; DIN EN 913 — Kippsicherung im Blick, Ampelverfahren, PDF-Prüfbericht." />
+  <meta name="twitter:image" content="https://turndex.dexware.app/og-image.png" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"TurnDex","url":"https://turndex.dexware.app/","description":"Sportgeräte und Sporthallen nach DGUV-Information 202-044 und DIN EN 913 ff. rechtssicher prüfen und dokumentieren: Geräte-Inventar mit EN-Kategorien, geführte Checklisten-Prüfung inkl. Kippsicherung, Ampelverfahren mit Geräte-Sperrung, PDF-Prüfbericht mit GPS-Stempel und Fotos. Für Kommunen, Schulträger, Vereine, Hallenbetreiber und Prüfdienste.","operatingSystem":"Android","applicationCategory":"BusinessApplication","image":"https://turndex.dexware.app/og-image.png","inLanguage":"de","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Kostenlos starten, Pro-Abo in der App"},"publisher":{"@type":"Organization","name":"Dexware","url":"https://dexware.app/"}}</script>
+  <!-- seo:end -->
+  <style>
+    :root {
+      --halle: #151A0E; --karte: #202815; --karte-tief: #1B2211;
+      --ink: #F2F7EA; --muted: #A8B497; --border: #37422A;
+      --lime: #65A30D; --lime-hell: #A3E635; --lime-tief: #4D7C0F;
+      --stahl: #9CA3AF; --stahl-dunkel: #6B7280; --gruen: #22C55E;
+      --ampel-orange: #F59E0B; --ampel-rot: #EF4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--halle); color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    a { color: var(--lime-hell); }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--lime-hell); outline-offset: 3px; border-radius: 4px;
+    }
+    .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+    ::selection { background: var(--lime-tief); color: #fff; }
+
+    /* sanftes Fels-Leuchten im Hintergrund */
+    .glow { position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background:
+        radial-gradient(620px 400px at 14% -6%, rgba(101,163,13,.14), transparent 65%),
+        radial-gradient(680px 440px at 98% 14%, rgba(77,124,15,.10), transparent 65%),
+        radial-gradient(560px 400px at 50% 112%, rgba(163,230,53,.06), transparent 65%); }
+
+    /* ========== Signatur: Kletterroute am linken Rand ========== */
+    #seite { position: relative; }
+    .route { position: absolute; top: 0; bottom: 0; left: 0; width: 64px;
+      z-index: 0; pointer-events: none; display: none; }
+    .route svg { width: 100%; height: 100%; display: block; }
+    @media (min-width: 1160px) { .route { display: block; } }
+    .sicherungspunkt { display: none; }
+    @media (min-width: 1160px) {
+      section { position: relative; }
+      .sicherungspunkt { display: grid; place-items: center;
+        position: absolute; top: 52px; left: calc(50% - 50vw + 32px);
+        transform: translateX(-50%);
+        width: 26px; height: 26px; border-radius: 50%;
+        background: var(--halle); border: 3px solid var(--stahl);
+        box-shadow: 0 0 0 4px var(--halle), 0 0 14px rgba(101,163,13,.45); z-index: 1; }
+      .sicherungspunkt::after { content: ''; width: 9px; height: 9px; border-radius: 50%;
+        background: var(--lime); box-shadow: 0 0 8px rgba(101,163,13,.9); }
+    }
+    /* Mobile: reduzierter Sektions-Marker vor dem Eyebrow */
+    .eyebrow::before { content: ''; display: inline-block; width: 10px; height: 10px;
+      border-radius: 50%; border: 2px solid var(--stahl); background: var(--lime);
+      margin-right: 9px; vertical-align: -1px; }
+
+    /* ========== Header: Sticky Glass ========== */
+    .sitehead { position: sticky; top: 0; z-index: 50; background: rgba(21,26,14,.78);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 0 rgba(101,163,13,.35); }
+    header { padding: 13px 0; display: flex; align-items: center; gap: 12px; }
+    .logo { width: 40px; height: 40px; border-radius: 11px; overflow: hidden;
+      outline: 2px solid var(--lime-tief); }
+    .logo img { width: 100%; height: 100%; display: block; }
+    .brand { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
+    .brand b { color: var(--lime-hell); }
+    .head-norm { margin-left: auto; font-size: 11.5px; font-weight: 700; letter-spacing: .8px;
+      color: var(--muted); text-transform: uppercase; }
+    @media (max-width: 720px) { .head-norm { display: none; } }
+
+    /* ========== Hero ========== */
+    .hero { padding: 68px 0 36px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; }
+    @media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding-top: 44px; }
+      .hero-art { order: -1; max-width: 300px; margin: 0 auto; } }
+    .kicker { display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(101,163,13,.12); color: var(--lime-hell);
+      border: 1px solid rgba(101,163,13,.45);
+      font-size: 12.5px; font-weight: 800; letter-spacing: .4px; padding: 7px 14px;
+      border-radius: 999px; margin-bottom: 20px; }
+    h1 { font-size: clamp(34px, 5.4vw, 55px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.08; }
+    h1 .grad { background: linear-gradient(100deg, var(--lime-hell), var(--lime) 55%, var(--lime-tief));
+      -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .sub { margin-top: 20px; font-size: 18px; color: var(--muted); max-width: 560px; }
+    .sub strong { color: var(--ink); }
+    .cta-row { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn { display: inline-block; font-weight: 800; font-size: 16px; padding: 15px 28px;
+      border-radius: 12px; text-decoration: none; color: #0C1206;
+      background: linear-gradient(135deg, var(--lime), var(--lime-tief));
+      box-shadow: 0 10px 26px rgba(101,163,13,.32);
+      transition: transform .14s ease, box-shadow .14s ease; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(101,163,13,.42); }
+    .btn.ghost { background: var(--karte); color: var(--ink); border: 1px solid var(--border);
+      box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+    .ticks { margin-top: 30px; display: flex; gap: 22px; flex-wrap: wrap; }
+    .tick { font-size: 14px; font-weight: 700; color: var(--ink); }
+    .tick::before { content: '✓ '; color: var(--lime-hell); font-weight: 900; }
+
+    /* ========== Hero-Szene: Reck-Aufbau — Pfosten, Stange, Matte, Prüf-Scan ========== */
+    .hero-art { position: relative; }
+    .anker-stage { background: linear-gradient(180deg, #28321A, var(--karte-tief));
+      border: 1px solid var(--border); border-radius: 18px;
+      box-shadow: 0 24px 54px rgba(0,0,0,.45), 0 0 0 1px rgba(101,163,13,.10);
+      padding: 26px 26px 18px; position: relative; overflow: hidden; }
+    /* Hallenlinien-Streifen an der Oberkante der Bühne */
+    .anker-stage::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 7px;
+      background: repeating-linear-gradient(45deg, var(--lime) 0 7px, var(--lime-tief) 7px 14px); }
+    .szene { width: 210px; height: 330px; margin: 0 auto; position: relative; }
+    /* Reck-Pfosten links + rechts */
+    .pfosten { position: absolute; top: 84px; bottom: 64px; width: 12px; border-radius: 6px;
+      background: linear-gradient(180deg, #C7CDD6, var(--stahl) 55%, #7C8590);
+      box-shadow: 0 3px 8px rgba(0,0,0,.5); }
+    .pfosten.l { left: 26px; } .pfosten.r { right: 26px; }
+    /* Arretierungen oben an den Pfosten */
+    .latch { position: absolute; top: 76px; width: 26px; height: 18px; border-radius: 5px;
+      background: #3A4530; border: 2px solid var(--stahl);
+      box-shadow: inset 0 2px 3px rgba(0,0,0,.4); z-index: 1; }
+    .latch.l { left: 19px; } .latch.r { right: 19px; }
+    /* Reckstange: fällt von oben ein und klickt in die Arretierungen */
+    .stange { position: absolute; top: 78px; left: 8px; right: 8px; height: 12px; border-radius: 6px;
+      background: linear-gradient(180deg, var(--lime-hell), var(--lime) 70%);
+      box-shadow: 0 0 16px rgba(163,230,53,.35), 0 3px 8px rgba(0,0,0,.4);
+      animation: snap 8s cubic-bezier(.34,1.56,.64,1) infinite; z-index: 2; }
+    @keyframes snap {
+      0% { transform: translateY(-56px) rotate(-4deg); opacity: 0; }
+      5% { opacity: 1; }
+      9% { transform: translateY(3px) rotate(0deg); }
+      12% { transform: translateY(-2px); }
+      15%, 100% { transform: translateY(0); }
+    }
+    /* Prüf-Scan-Licht wandert die Stange entlang */
+    .scan { position: absolute; top: 72px; left: 20px; width: 40px; height: 24px;
+      border-radius: 8px; z-index: 3;
+      background: linear-gradient(90deg, transparent, #fff 30%, #fff 70%, transparent);
+      box-shadow: 0 0 16px 4px rgba(163,230,53,.65); opacity: 0;
+      animation: scan 8s ease-in-out infinite; }
+    @keyframes scan {
+      0%, 30% { left: 20px; opacity: 0; }
+      36% { opacity: .95; }
+      60% { opacity: .95; }
+      68%, 100% { left: 150px; opacity: 0; }
+    }
+    /* Weichbodenmatte: schiebt sich unter das Gerät */
+    .matte { position: absolute; bottom: 26px; left: 10px; right: 10px; height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--lime), var(--lime-tief));
+      border: 2px solid var(--lime-tief); box-shadow: 0 6px 16px rgba(0,0,0,.45);
+      transform-origin: bottom center;
+      animation: matte 8s cubic-bezier(.22,.61,.36,1) infinite; }
+    .matte::before { content: ''; position: absolute; top: 50%; left: 12px; right: 12px; height: 3px;
+      border-radius: 2px; background: rgba(12,18,6,.35); }
+    @keyframes matte {
+      0%, 14% { transform: translateY(24px); opacity: 0; }
+      26%, 100% { transform: translateY(0); opacity: 1; }
+    }
+    /* Bodenlinie der Halle */
+    .boden { position: absolute; bottom: 16px; left: 0; right: 0; height: 4px; border-radius: 2px;
+      background: var(--stahl-dunkel); opacity: .5; }
+    /* Prüfplakette am rechten Pfosten: rot blinkt, dann grün */
+    .indikator { position: absolute; right: 20px; top: 150px; width: 13px; height: 13px;
+      border-radius: 50%; background: var(--ampel-rot); z-index: 2;
+      animation: indikator 8s ease-in-out infinite; }
+    @keyframes indikator {
+      0%, 18% { background: var(--ampel-rot); box-shadow: 0 0 8px 1px rgba(239,68,68,.75); }
+      24% { background: #7a2e2e; box-shadow: none; }
+      30% { background: var(--ampel-rot); box-shadow: 0 0 8px 1px rgba(239,68,68,.75); }
+      38% { background: #7a2e2e; box-shadow: none; }
+      46% { background: var(--ampel-rot); box-shadow: 0 0 8px 1px rgba(239,68,68,.75); }
+      70%, 100% { background: var(--gruen); box-shadow: 0 0 10px 2px rgba(34,197,94,.8); }
+    }
+    .plakette { position: absolute; right: -4px; top: 120px; width: 42px; height: 42px; border-radius: 50%;
+      background: var(--gruen); color: #06240f; display: grid; place-items: center;
+      font-size: 21px; font-weight: 900; border: 3px solid #0f2a18;
+      box-shadow: 0 6px 16px rgba(34,197,94,.4); transform: rotate(7deg) scale(0);
+      animation: plak 8s cubic-bezier(.34,1.56,.64,1) infinite; z-index: 4; }
+    @keyframes plak { 0%, 70% { transform: rotate(7deg) scale(0); } 78%, 100% { transform: rotate(7deg) scale(1); } }
+    .stage-caption { margin: 14px 0 2px; color: var(--muted); font-size: 13px; font-weight: 600;
+      text-align: center; letter-spacing: .4px; }
+    @media (prefers-reduced-motion: reduce) {
+      .stange, .matte, .scan, .indikator, .plakette { animation: none; }
+      .stange { transform: none; }
+      .matte { transform: none; opacity: 1; }
+      .scan { opacity: 0; }
+      .indikator { background: var(--gruen); box-shadow: 0 0 10px 2px rgba(34,197,94,.8); }
+      .plakette { transform: rotate(7deg) scale(1); }
+    }
+
+    /* ========== Sektionen ========== */
+    section { padding: 52px 0; }
+    .eyebrow { color: var(--lime-hell); font-size: 13px; font-weight: 900;
+      letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 8px; }
+    h2 { font-size: clamp(24px, 3.6vw, 32px); font-weight: 900; letter-spacing: -0.7px; margin-bottom: 8px; }
+    .lead { color: var(--muted); font-size: 16px; max-width: 660px; margin-bottom: 26px; }
+    .lead strong, .pflicht-text strong { color: var(--ink); }
+
+    /* Karten mit Hallenlinien-Oberkante */
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .karte { position: relative; background: var(--karte); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px 22px 24px; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
+    .karte::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+      background: repeating-linear-gradient(45deg, var(--lime) 0 7px, var(--lime-tief) 7px 14px);
+      opacity: .9; }
+    .karte:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(101,163,13,.18);
+      border-color: var(--lime-tief); }
+    .karte .chip { width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center;
+      font-size: 23px; margin-bottom: 14px; background: rgba(101,163,13,.14);
+      border: 1px solid rgba(101,163,13,.4); }
+    .karte h3 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+    .karte p { font-size: 14.5px; color: var(--muted); }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 2px; }
+    .dot.g { background: var(--gruen); } .dot.o { background: var(--ampel-orange); } .dot.r { background: var(--ampel-rot); }
+
+    /* Pflicht-Sektion */
+    .pflicht-band { background: var(--karte-tief); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .pflicht-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; align-items: start; }
+    @media (max-width: 820px) { .pflicht-grid { grid-template-columns: 1fr; } }
+    .pflicht-text p { color: var(--muted); font-size: 15.5px; margin-bottom: 14px; }
+    .pflicht-liste { list-style: none; background: var(--karte); border: 1px solid var(--border);
+      border-radius: 16px; padding: 26px 24px 20px; position: relative; overflow: hidden; }
+    .pflicht-liste::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+      background: repeating-linear-gradient(45deg, var(--lime) 0 7px, var(--lime-tief) 7px 14px); }
+    .pflicht-liste li { padding: 9px 0 9px 34px; position: relative; font-size: 14.5px;
+      border-bottom: 1px solid var(--border); }
+    .pflicht-liste li:last-child { border-bottom: none; }
+    .pflicht-liste li::before { content: ''; position: absolute; left: 2px; top: 14px;
+      width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--stahl); }
+    .pflicht-liste li::after { content: ''; position: absolute; left: 7px; top: 19px;
+      width: 4px; height: 4px; border-radius: 50%; background: var(--lime); }
+    .pflicht-liste b { color: var(--lime-hell); }
+
+    /* Ablauf: Seilschiene */
+    .schiene { position: relative; max-width: 720px; }
+    .schiene::before { content: ''; position: absolute; left: 16px; top: 8px; bottom: 16px; width: 5px;
+      border-radius: 3px;
+      background: repeating-linear-gradient(180deg, var(--lime) 0 10px, var(--lime-tief) 10px 20px);
+      opacity: .85; }
+    .halt { position: relative; padding: 0 0 30px 64px; }
+    .halt .ring { position: absolute; left: 4px; top: 2px; width: 30px; height: 30px; border-radius: 50%;
+      background: var(--halle); border: 3px solid var(--stahl); color: var(--lime-hell);
+      display: grid; place-items: center; font-weight: 900; font-size: 14px; z-index: 1;
+      box-shadow: 0 4px 12px rgba(101,163,13,.28); }
+    .halt strong { font-size: 16.5px; }
+    .halt p { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+
+    /* Preise */
+    .price-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); max-width: 720px; }
+    .price { position: relative; background: var(--karte); border: 1px solid var(--border);
+      border-radius: 16px; padding: 30px 24px 26px; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25); }
+    .price::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+      background: repeating-linear-gradient(45deg, var(--stahl-dunkel) 0 7px, #4B5563 7px 14px); }
+    .price.pro { border-color: var(--lime-tief); box-shadow: 0 10px 30px rgba(101,163,13,.16); }
+    .price.pro::before { background: repeating-linear-gradient(45deg, var(--lime) 0 7px, var(--lime-tief) 7px 14px); }
+    .price h3 { font-size: 18px; font-weight: 800; }
+    .price .amount { font-size: 38px; font-weight: 900; letter-spacing: -1px; margin: 10px 0 2px; }
+    .price.pro .amount { color: var(--lime-hell); }
+    .price .per { font-size: 13px; color: var(--muted); }
+    .price ul { list-style: none; margin-top: 16px; }
+    .price li { font-size: 14.5px; padding: 4px 0; color: var(--muted); }
+    .price li::before { content: '✓ '; color: var(--lime-hell); font-weight: 900; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 800; color: #0C1206;
+      background: var(--lime); padding: 4px 10px; border-radius: 6px; margin-left: 8px; vertical-align: middle; }
+
+    /* Suite-Block */
+    .suite { margin-top: 30px; background: var(--karte-tief); color: var(--ink);
+      border-radius: 18px; padding: 38px 32px; border: 1px solid var(--border);
+      position: relative; overflow: hidden; }
+    .suite::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 7px;
+      background: repeating-linear-gradient(45deg, var(--lime) 0 7px, var(--lime-tief) 7px 14px); }
+    .suite-pill { display: inline-block; font-size: 12px; font-weight: 900; letter-spacing: 1.2px;
+      text-transform: uppercase; color: #0C1206; background: var(--lime); padding: 6px 14px; border-radius: 999px; }
+    .suite h3 { font-size: 27px; font-weight: 900; letter-spacing: -.6px; margin-top: 16px; }
+    .suite .sl { color: var(--muted); font-size: 15px; margin-top: 10px; max-width: 640px; }
+    .suite .sl b { color: var(--ink); }
+    .suite-prices { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 26px; }
+    @media (max-width: 700px) { .suite-prices { grid-template-columns: 1fr; } }
+    .sp { background: var(--karte); border: 1px solid var(--border); border-radius: 12px; padding: 22px; position: relative; }
+    .sp.best { border: 2px solid var(--lime); }
+    .sp-badge { position: absolute; top: -13px; right: 16px; font-size: 11.5px; font-weight: 900;
+      color: #0C1206; background: var(--lime); padding: 4px 11px; border-radius: 6px; }
+    .sp-name { font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+    .sp.best .sp-name { color: var(--lime-hell); }
+    .sp-strike { color: #6f7a64; font-size: 14px; text-decoration: line-through; margin-top: 10px; }
+    .sp-amount { font-size: 32px; font-weight: 900; letter-spacing: -.8px; }
+    .sp-amount small { font-size: 14px; font-weight: 600; color: var(--muted); }
+    .sp-note { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .suite-icons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+    .suite-icons img { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); }
+    .suite-icons img:first-child { outline: 2px solid var(--lime); }
+    .suite-list { list-style: none; margin-top: 18px; }
+    .suite-list li { font-size: 14.5px; padding: 5px 0 5px 24px; position: relative; }
+    .suite-list li::before { content: '▪'; color: var(--lime-hell); position: absolute; left: 0; }
+    .suite-how { color: var(--muted); font-size: 13.5px; margin: 18px 0 20px; }
+
+    /* Cross-Promo */
+    .promo-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+    .promo { display: flex; gap: 14px; align-items: center; background: var(--karte);
+      border: 1px solid var(--border); border-radius: 14px; padding: 16px;
+      text-decoration: none; color: var(--ink);
+      transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease; }
+    .promo:hover { border-color: var(--lime-tief); transform: translateY(-3px);
+      box-shadow: 0 12px 26px rgba(101,163,13,.16); }
+    .promo img { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 12px; }
+    .promo b { display: block; font-size: 15.5px; }
+    .promo span { font-size: 13px; color: var(--muted); }
+
+    /* FAQ */
+    .faq { max-width: 760px; }
+    .faq details { background: var(--karte); border: 1px solid var(--border); border-radius: 12px;
+      margin-bottom: 12px; overflow: hidden; }
+    .faq details[open] { border-color: var(--lime-tief); }
+    .faq summary { cursor: pointer; font-weight: 800; font-size: 15.5px; padding: 16px 18px;
+      list-style: none; position: relative; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: '+'; position: absolute; right: 18px; top: 12px;
+      font-size: 22px; font-weight: 900; color: var(--lime-hell); }
+    .faq details[open] summary::after { content: '–'; }
+    .faq .antwort { padding: 0 18px 16px; color: var(--muted); font-size: 14.5px; }
+
+    /* Hallenpunkt-Trenner */
+    .trenner { display: flex; justify-content: center; align-items: center; gap: 12px; padding: 10px 0; }
+    .trenner i { width: 8px; height: 8px; border-radius: 50%; background: var(--lime-tief); opacity: .5; }
+    .trenner i:nth-child(odd) { background: var(--stahl); opacity: .4; }
+
+    /* Scroll-Reveal */
+    .reveal.pre { opacity: 0; transform: translateY(18px); }
+    .reveal.in { opacity: 1; transform: none; transition: opacity .6s ease, transform .6s cubic-bezier(.22,.61,.36,1); }
+    .grid .reveal.in:nth-child(2), .promo-grid .reveal.in:nth-child(2) { transition-delay: .07s; }
+    .grid .reveal.in:nth-child(3), .promo-grid .reveal.in:nth-child(3) { transition-delay: .14s; }
+    .grid .reveal.in:nth-child(4), .promo-grid .reveal.in:nth-child(4) { transition-delay: .21s; }
+    .grid .reveal.in:nth-child(5), .promo-grid .reveal.in:nth-child(5) { transition-delay: .28s; }
+    .grid .reveal.in:nth-child(6), .promo-grid .reveal.in:nth-child(6) { transition-delay: .35s; }
+    @media (prefers-reduced-motion: no-preference) {
+      .hero > div:first-child > * { opacity: 0; transform: translateY(16px);
+        animation: rise .7s cubic-bezier(.22,.61,.36,1) forwards; }
+      .hero > div:first-child > *:nth-child(2) { animation-delay: .08s; }
+      .hero > div:first-child > *:nth-child(3) { animation-delay: .16s; }
+      .hero > div:first-child > *:nth-child(4) { animation-delay: .24s; }
+      .hero > div:first-child > *:nth-child(5) { animation-delay: .32s; }
+      @keyframes rise { to { opacity: 1; transform: none; } }
+    }
+
+    /* Footer */
+    .foot { background: #0E120A; color: var(--muted); margin-top: 40px;
+      border-top: 3px solid var(--lime); }
+    .foot-inner { display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between;
+      padding: 30px 0 46px; font-size: 14px; }
+    .foot a { color: var(--ink); }
+    .foot nav { display: flex; gap: 16px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="sitehead">
+    <div class="wrap">
+      <header>
+        <span class="logo"><img src="turndex-icon.png" alt="TurnDex" /></span>
+        <span class="brand">Turn<b>Dex</b></span>
+        <span class="head-norm">DGUV-I 202-044 · DIN EN 913 ff.</span>
+      </header>
+    </div>
+  </div>
+
+  <div id="seite">
+    <!-- Hallenlinie: geschwungene Spielfeldmarkierung am linken Rand (Desktop) -->
+    <div class="route" aria-hidden="true">
+      <svg viewBox="0 0 64 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 0 C 20 90, 46 170, 32 260 C 20 350, 44 430, 32 520
+                 C 20 610, 46 690, 32 780 C 20 870, 44 950, 32 1040 C 24 1110, 38 1160, 32 1200"
+              fill="none" stroke="#65A30D" stroke-width="3" stroke-opacity=".35" />
+        <path d="M32 0 C 20 90, 46 170, 32 260 C 20 350, 44 430, 32 520
+                 C 20 610, 46 690, 32 780 C 20 870, 44 950, 32 1040 C 24 1110, 38 1160, 32 1200"
+              fill="none" stroke="#A3E635" stroke-width="1" stroke-opacity=".25" stroke-dasharray="2 10" />
+      </svg>
+    </div>
+
+    <div class="wrap">
+      <div class="hero">
+        <div>
+          <span class="kicker">Kommunen · Schulträger · Vereine · Hallenbetreiber · Prüfdienste · FM</span>
+          <h1>Sportgeräte. <span class="grad">Geprüft. Dokumentiert. Rechtssicher.</span></h1>
+          <p class="sub">
+            Tore, Reck, Barren, Sprossenwand, Deckenanlagen, Matten — jedes Gerät muss
+            <strong>mindestens einmal im Jahr von einer sachkundigen Person</strong> geprüft werden
+            (DGUV-Information 202-044, DIN EN 913 ff.). TurnDex führt dein Geräte-Inventar je
+            Sporthalle, denkt an die Kippsicherung und macht jede Prüfung zum
+            <strong>PDF-Prüfbericht mit GPS-Stempel und Fotos</strong> — gerichtsfest dokumentiert.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="#" id="store-link">Bald bei Google Play</a>
+            <a class="btn ghost" href="mailto:2easy4trash@gmail.com?subject=TurnDex%20Interesse">Schreib uns</a>
+          </div>
+          <div class="ticks">
+            <span class="tick">Kippsicherung im Blick</span>
+            <span class="tick">Einträge unveränderlich</span>
+            <span class="tick">GPS + Foto automatisch</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="anker-stage">
+            <div class="szene">
+              <div class="pfosten l"></div>
+              <div class="pfosten r"></div>
+              <div class="latch l"></div>
+              <div class="latch r"></div>
+              <div class="stange"></div>
+              <div class="scan"></div>
+              <div class="indikator"></div>
+              <div class="matte"></div>
+              <div class="boden"></div>
+              <div class="plakette">✓</div>
+            </div>
+            <div class="stage-caption">Aufbauen. Prüfen. Freigeben.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trenner" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+    <div class="pflicht-band">
+      <div class="wrap">
+        <section id="pflicht">
+          <span class="sicherungspunkt" aria-hidden="true"></span>
+          <div class="eyebrow">Rechtsgrundlage</div>
+          <h2>Sporthallen sind Pflicht-Terrain — mit klaren Regeln</h2>
+          <div class="pflicht-grid">
+            <div class="pflicht-text reveal">
+              <p>
+                Wo täglich Kinder turnen und Vereine trainieren, trägt der Betreiber die
+                <strong>Verkehrssicherungspflicht (§ 823 BGB)</strong>. Zusammen mit
+                <strong>DGUV Vorschrift 1</strong> und der <strong>DGUV-Information 202-044
+                „Sportstätten und Sportgeräte"</strong> heißt das: regelmäßige
+                <strong>Sicht- und Funktionskontrolle</strong> durch Lehrkraft oder Übungsleitung —
+                und <strong>mindestens einmal im Jahr</strong> eine Prüfung durch eine sachkundige
+                Person nach den Gerätenormen <strong>DIN EN 913 ff.</strong>
+              </p>
+              <p>
+                Der Ernstfall ist real: <strong>Umstürzende Tore</strong> haben in Deutschland
+                mehrfach Kinder das Leben gekostet — deshalb gilt: Tore niemals unballastiert,
+                Kippsicherung bei jeder Kontrolle prüfen. Erkennbar beschädigte Geräte sind
+                <strong>sofort zu sperren</strong>, bis eine Fachkraft sie freigibt.
+              </p>
+              <p>
+                Passiert etwas, fragen Unfallkasse, Versicherung und Gericht als Erstes nach dem
+                Prüfnachweis <strong>genau dieses Geräts</strong>. Ohne Doku je Gerät steht der
+                Träger blank da.
+              </p>
+            </div>
+            <ul class="pflicht-liste reveal">
+              <li><b>Vor der Benutzung:</b> Sicht- &amp; Funktionskontrolle durch Lehrkraft/Übungsleitung.</li>
+              <li><b>Mind. 1× im Jahr:</b> Prüfung durch eine sachkundige Person (DGUV-I 202-044, DIN EN 913).</li>
+              <li><b>Tore:</b> Kippsicherung prüfen — niemals unballastiert aufstellen (EN 748).</li>
+              <li><b>Bei Schäden:</b> Gerät sofort sperren — Benutzung untersagen, kennzeichnen, sichern.</li>
+              <li><b>Dokumentationspflicht:</b> Nachweis je Gerät — Bestand, Prüfungen, Mängel, Instandsetzung.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <section id="funktionen">
+        <span class="sicherungspunkt" aria-hidden="true"></span>
+        <div class="eyebrow">Funktionen</div>
+        <h2>Deine Beweiskette für jedes Sportgerät</h2>
+        <p class="lead">Vom Fußballtor bis zur Basketball-Deckenanlage — TurnDex dokumentiert jedes Gerät einzeln, unveränderlich und teilbar.</p>
+        <div class="grid">
+          <div class="karte reveal"><span class="chip">🤸</span><h3>Geräte-Inventar mit EN-Kategorien</h3>
+            <p>Jedes Gerät einzeln erfasst — Kategorie mit Norm (Tor EN 748, Reck EN 12197, Barren EN 914, Matte EN 12503 …), Hersteller, Inventar-Nummer, Baujahr, Referenzfoto. Je Sporthalle, Gymnastikraum oder Außenanlage.</p></div>
+          <div class="karte reveal"><span class="chip">✅</span><h3>Geführte Checklisten-Prüfung</h3>
+            <p>12 Prüfpunkte nach DGUV-I 202-044 — Standsicherheit &amp; Kippsicherung, Rahmen, Holzteile, Polsterung, Fangstellen, Verstellmechanik, Seile &amp; Netze, Deckenbefestigung, Matten u.&nbsp;v.&nbsp;m. Schritt für Schritt, nichts wird vergessen.</p></div>
+          <div class="karte reveal"><span class="chip">🚦</span><h3>Mängel im Ampelverfahren</h3>
+            <p><span class="dot g"></span> beobachten, <span class="dot o"></span> instand setzen, <span class="dot r"></span> Gerät sperren — Benutzung untersagen. Jeder Mangel wird eingestuft, fotografiert und rechtssicher festgehalten.</p></div>
+          <div class="karte reveal"><span class="chip">📄</span><h3>PDF-Prüfbericht</h3>
+            <p>Ein Tipp erzeugt den Prüfbericht je Sportstätte oder Zeitraum — mit GPS-Stempel, Beweisfotos und in Pro mit deinem eigenen Logo. Fertig für Schulträger, Unfallkasse oder Vereinsvorstand.</p></div>
+          <div class="karte reveal"><span class="chip">👥</span><h3>Team unter einem Träger</h3>
+            <p>Die Leitung lädt per Code ein — Hausmeister, Übungsleitung und Prüfdienst dokumentieren gemeinsam unter einem Betrieb. Jede Prüfung zeigt, wer sie durchgeführt hat.</p></div>
+          <div class="karte reveal"><span class="chip">🔒</span><h3>Append-only-Beweiskette</h3>
+            <p>Prüfungen können nie bearbeitet oder gelöscht werden — Storno nur gekennzeichnet und mit Begründung. Genau diese Unveränderlichkeit überzeugt vor Gericht.</p></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="trenner" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+    <div class="wrap">
+      <section id="ablauf">
+        <span class="sicherungspunkt" aria-hidden="true"></span>
+        <div class="eyebrow">Ablauf</div>
+        <h2>So funktioniert's</h2>
+        <div class="schiene">
+          <div class="halt reveal"><span class="ring">1</span><strong>Sportstätte &amp; Geräte anlegen.</strong>
+            <p>Sporthalle, Gymnastikraum oder Außenanlage anlegen und darunter jedes Gerät mit Kategorie, Inventar-Nummer und Baujahr erfassen. Die Jahresfrist läuft ab sofort mit.</p></div>
+          <div class="halt reveal"><span class="ring">2</span><strong>Prüfung durchführen.</strong>
+            <p>Gerät wählen, die 12-Punkte-Checkliste durchgehen, Mängel per Ampel einstufen, Foto dazu — GPS- und Zeitstempel ergänzt TurnDex automatisch. Auch „alles in Ordnung" ist ein Nachweis.</p></div>
+          <div class="halt reveal"><span class="ring">3</span><strong>PDF-Bericht teilen.</strong>
+            <p>Prüfbericht als PDF an Schulträger, Unfallkasse, Vereinsvorstand oder Auftraggeber — oder im Streitfall an den Anwalt.</p></div>
+        </div>
+      </section>
+
+      <section id="preise">
+        <span class="sicherungspunkt" aria-hidden="true"></span>
+        <div class="eyebrow">Preise</div>
+        <h2>Preise</h2>
+        <div class="price-grid">
+          <div class="price reveal">
+            <h3>Free</h3>
+            <div class="amount">0&nbsp;€</div>
+            <div class="per">für immer</div>
+            <ul>
+              <li>Bis 5 Sportgeräte</li>
+              <li>Alle Kernfunktionen</li>
+              <li>Checkliste, Ampel, GPS, Fotos</li>
+              <li>PDF-Prüfbericht</li>
+              <li>Cloud-Sync auf allen Geräten</li>
+            </ul>
+          </div>
+          <div class="price pro reveal">
+            <h3>Pro <span class="tag">Empfohlen</span></h3>
+            <div class="amount">9,99&nbsp;€</div>
+            <div class="per">pro Monat · oder 79,99 €/Jahr (4 Monate geschenkt) · jederzeit kündbar</div>
+            <ul>
+              <li>Unbegrenzt Sportgeräte</li>
+              <li>PDF-Branding mit eigenem Logo</li>
+              <li>Team: Mitarbeiter einladen</li>
+              <li>Prüf-Erinnerung</li>
+              <li>Prioritäts-Support</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Dexware Suite Bundle -->
+        <div class="suite" id="suite">
+          <span class="suite-pill">Dexware Suite — ein Abo, alle Apps</span>
+          <h3>Alle 16 Dexware-Apps. Ein Abo.</h3>
+          <p class="sl">
+            TurnDex ist <b>eine von 16 Dexware-Apps</b>. Die Suite kostet so viel wie unsere teuerste
+            Einzel-App — und schaltet <b>alle</b> Dexware-Apps auf allen deinen Geräten frei.
+            Neue Apps kommen automatisch dazu, ohne Aufpreis.
+          </p>
+          <div class="suite-prices">
+            <div class="sp">
+              <div class="sp-name">Monatlich</div>
+              <div class="sp-strike">über 100 € — alle Apps einzeln</div>
+              <div class="sp-amount">29,99 € <small>/ Monat</small></div>
+              <div class="sp-note">Der Preis unserer teuersten Einzel-App — über 65 % günstiger als alles einzeln.</div>
+            </div>
+            <div class="sp best">
+              <span class="sp-badge">4 Monate geschenkt · −33 %</span>
+              <div class="sp-name">Jährlich</div>
+              <div class="sp-strike">statt 359,88 € (12 × 29,99 €)</div>
+              <div class="sp-amount">239,99 € <small>/ Jahr</small></div>
+              <div class="sp-note">Entspricht 20,00 € im Monat — du zahlst nur 8 von 12 Monaten.</div>
+            </div>
+          </div>
+          <div class="suite-icons">
+            <img src="turndex-icon.png" alt="TurnDex" title="TurnDex" />
+            <img src="gurtdex-icon.png" alt="GurtDex" title="GurtDex" />
+            <img src="toredex-icon.png" alt="ToreDex" title="ToreDex" />
+            <img src="geruestdex-icon.png" alt="GerüstDex" title="GerüstDex" />
+            <img src="feuerdex-icon.png" alt="FeuerDex" title="FeuerDex" />
+            <img src="leiterdex-icon.png" alt="LeiterDex" title="LeiterDex" />
+            <img src="regaldex-icon.png" alt="RegalDex" title="RegalDex" />
+            <img src="spieldex-icon.png" alt="SpielDex" title="SpielDex" />
+            <img src="winterdex-icon.png" alt="WinterDex" title="WinterDex" />
+            <img src="kfzdex-icon.png" alt="KfzDex" title="KfzDex" />
+            <img src="pruefdex-icon.png" alt="PrüfDex" title="PrüfDex" />
+            <img src="schutzheld-icon.png" alt="SchutzDex" title="SchutzDex" />
+            <img src="baumdex-icon.png" alt="BaumDex" title="BaumDex" />
+            <img src="routelog-icon.png" alt="TourDex" title="TourDex" />
+            <img src="craftdex-icon.png" alt="CraftDex" title="CraftDex" />
+            <img src="archio-icon.png" alt="DokuDex" title="DokuDex" />
+          </div>
+          <ul class="suite-list">
+            <li>Alle 16 Apps inklusive — von Sportgeräte-Prüfung bis Winterdienst</li>
+            <li>Alle zukünftigen Dexware-Apps automatisch dabei</li>
+            <li>Einmal kaufen — in jeder App freigeschaltet</li>
+            <li>Jederzeit kündbar</li>
+          </ul>
+          <p class="suite-how">Erhältlich direkt in jeder Dexware-App: einfach in der App auf „Pro werden" tippen und die Dexware Suite wählen.</p>
+          <a href="https://dexware.app/" target="_blank" rel="noopener" class="btn">Mehr zur Dexware Suite →</a>
+          <p class="suite-how" style="margin-top:14px">💻 Fürs Web gibt's einen Haupteinstieg: <a href="https://dashboard.dexware.app" target="_blank" rel="noopener">dashboard.dexware.app</a> — die Übersicht aller App-Dashboards. Dort erscheint auch das TurnDex-Dashboard: Sportstätten, Prüfungen, Mängel und Prüfberichte im Browser.</p>
+        </div>
+      </section>
+
+      <section id="familie">
+        <span class="sicherungspunkt" aria-hidden="true"></span>
+        <div class="eyebrow">Die Dexware-Familie</div>
+        <h2>Entdecke die ganze Dexware</h2>
+        <p class="lead">TurnDex ist Teil der Dexware-Familie — Pflicht-Dokumentation, die einfach funktioniert. Du prüfst auch Spielplätze? Dann ist <a href="https://spieldex.dexware.app">SpielDex</a> dein perfekter Begleiter.</p>
+        <div class="promo-grid">
+          <a class="promo reveal" href="https://spieldex.dexware.app" target="_blank" rel="noopener">
+            <img src="spieldex-icon.png" alt="SpielDex" width="48" height="48" />
+            <span><b>SpielDex</b><span>Spielplatzkontrolle nach DIN EN 1176 — der gleiche Workflow für draußen.</span></span></a>
+          <a class="promo reveal" href="https://gurtdex.dexware.app" target="_blank" rel="noopener">
+            <img src="gurtdex-icon.png" alt="GurtDex" width="48" height="48" />
+            <span><b>GurtDex</b><span>PSA gegen Absturz prüfen — mit Ablegereife-Wächter (DGUV 312-906).</span></span></a>
+          <a class="promo reveal" href="https://geruestdex.dexware.app" target="_blank" rel="noopener">
+            <img src="geruestdex-icon.png" alt="GerüstDex" width="48" height="48" />
+            <span><b>GerüstDex</b><span>Gerüstprüfung nach TRBS 2121-1 — gerichtsfest dokumentiert.</span></span></a>
+          <a class="promo reveal" href="https://toredex.dexware.app" target="_blank" rel="noopener">
+            <img src="toredex-icon.png" alt="ToreDex" width="48" height="48" />
+            <span><b>ToreDex</b><span>Torprüfung nach ASR A1.7 &amp; DGUV I 208-022 — rechtssicher.</span></span></a>
+          <a class="promo reveal" href="https://feuerdex.dexware.app" target="_blank" rel="noopener">
+            <img src="feuerdex-icon.png" alt="FeuerDex" width="48" height="48" />
+            <span><b>FeuerDex</b><span>Feuerlöscher-Prüfung nach ASR A2.2 &amp; DIN 14406-4 — gerichtsfest.</span></span></a>
+          <a class="promo reveal" href="https://leiterdex.dexware.app" target="_blank" rel="noopener">
+            <img src="leiterdex-icon.png" alt="LeiterDex" width="48" height="48" />
+            <span><b>LeiterDex</b><span>Leitern- &amp; Tritte-Prüfung nach BetrSichV &amp; DGUV — gerichtsfest.</span></span></a>
+          <a class="promo reveal" href="https://regaldex.dexware.app" target="_blank" rel="noopener">
+            <img src="regaldex-icon.png" alt="RegalDex" width="48" height="48" />
+            <span><b>RegalDex</b><span>Regalinspektion nach DIN EN 15635 — Ampelverfahren &amp; Prüfbericht.</span></span></a>
+          <a class="promo reveal" href="https://pruefdex.dexware.app" target="_blank" rel="noopener">
+            <img src="pruefdex-icon.png" alt="PrüfDex" width="48" height="48" />
+            <span><b>PrüfDex</b><span>DGUV-V3-Prüfung: Geräte, Protokolle, Plaketten &amp; Fristen.</span></span></a>
+          <a class="promo reveal" href="https://winterdex.dexware.app" target="_blank" rel="noopener">
+            <img src="winterdex-icon.png" alt="WinterDex" width="48" height="48" />
+            <span><b>WinterDex</b><span>Winterdienst gerichtsfest — Räum- &amp; Streupflicht mit GPS &amp; Wetter.</span></span></a>
+          <a class="promo reveal" href="https://kfzdex.dexware.app" target="_blank" rel="noopener">
+            <img src="kfzdex-icon.png" alt="KfzDex" width="48" height="48" />
+            <span><b>KfzDex</b><span>Fuhrpark-Verwaltung — UVV-Prüfung, Führerscheinkontrolle &amp; Fristen.</span></span></a>
+          <a class="promo reveal" href="https://schutzdex.dexware.app" target="_blank" rel="noopener">
+            <img src="schutzheld-icon.png" alt="SchutzDex" width="48" height="48" />
+            <span><b>SchutzDex</b><span>KI-Unterweisung &amp; Gefährdungsbeurteilung — prüffest dokumentiert.</span></span></a>
+          <a class="promo reveal" href="https://baumdex-portal.vercel.app/" target="_blank" rel="noopener">
+            <img src="baumdex-icon.png" alt="BaumDex" width="48" height="48" />
+            <span><b>BaumDex</b><span>Baumkataster &amp; Verkehrssicherung für GaLaBau und Baumpflege.</span></span></a>
+          <a class="promo reveal" href="https://craftdex.dexware.app" target="_blank" rel="noopener">
+            <img src="craftdex-icon.png" alt="CraftDex" width="48" height="48" />
+            <span><b>CraftDex</b><span>Aufträge, Zeiten &amp; Material — die App für Handwerksbetriebe.</span></span></a>
+          <a class="promo reveal" href="https://tourdex.dexware.app" target="_blank" rel="noopener">
+            <img src="routelog-icon.png" alt="TourDex" width="48" height="48" />
+            <span><b>TourDex</b><span>Automatisches Fahrtenbuch — KI trennt geschäftlich &amp; privat.</span></span></a>
+          <a class="promo reveal" href="https://dokudex.dexware.app" target="_blank" rel="noopener">
+            <img src="archio-icon.png" alt="DokuDex" width="48" height="48" />
+            <span><b>DokuDex</b><span>Dokumente scannen &amp; per KI verstehen — mit Fristen-Erinnerung.</span></span></a>
+        </div>
+        <p style="text-align:center;margin-top:20px">
+          <a href="https://dexware.app/" target="_blank" rel="noopener">Alle Dexware-Apps auf einen Blick →</a>
+        </p>
+      </section>
+
+      <section id="faq">
+        <span class="sicherungspunkt" aria-hidden="true"></span>
+        <div class="eyebrow">FAQ</div>
+        <h2>Häufige Fragen</h2>
+        <div class="faq">
+          <details class="reveal">
+            <summary>Wer darf die jährliche Sportgeräte-Prüfung durchführen?</summary>
+            <div class="antwort">Eine sachkundige Person — jemand mit der nötigen Geräte- und Normenkenntnis
+              (DGUV-I 202-044, DIN EN 913 ff.), z. B. geschulte Hausmeister, Fachfirmen oder Prüfdienste.
+              TurnDex ersetzt nicht die Sachkunde, sondern führt durch die Prüfung und erzeugt den
+              rechtssicheren Nachweis.</div>
+          </details>
+          <details class="reveal">
+            <summary>Was passiert bei einem gefährlichen Mangel?</summary>
+            <div class="antwort">Rot im Ampelverfahren heißt: Gerät sofort sperren — Benutzung untersagen,
+              kennzeichnen, wegschließen oder gegen Benutzung sichern. Klassiker sind fehlende Kippsicherungen
+              an Toren, beschädigte Deckenaufhängungen oder gebrochene Holme. TurnDex dokumentiert die Sperrung
+              mit Foto und Zeitstempel — und die spätere Instandsetzung gleich mit.</div>
+          </details>
+          <details class="reveal">
+            <summary>Kann ich Prüfungen nachträglich ändern?</summary>
+            <div class="antwort">Nein — und genau das ist der Punkt. Prüfungen sind append-only: nichts wird
+              gelöscht oder bearbeitet, Stornos sind nur gekennzeichnet und mit Begründung möglich. So ist deine
+              Dokumentation vor BG, Versicherung und Gericht belastbar.</div>
+          </details>
+          <details class="reveal">
+            <summary>Funktioniert TurnDex auch für mein Team?</summary>
+            <div class="antwort">Ja. Die Leitung lädt Mitarbeiter per Betriebscode ein — alle dokumentieren
+              unter einem Träger, jede Prüfung zeigt den Prüfer. Ideal für Gebäudemanagement, Hausmeister-Teams,
+              Vereine und Prüfdienstleister.</div>
+          </details>
+          <details class="reveal">
+            <summary>Wo liegen meine Daten?</summary>
+            <div class="antwort">In einem EU-Rechenzentrum (Supabase, Frankfurt). Keine Werbung, kein Tracking,
+              kein Datenverkauf — Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</div>
+          </details>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="wrap">
+      <div class="foot-inner">
+        <span>© 2026 TurnDex</span>
+        <nav>
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+          <a href="konto-loeschung.html">Konto löschen</a>
+          <a href="mailto:2easy4trash@gmail.com?subject=TurnDex%20Support">Support</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduced && 'IntersectionObserver' in window) {
+        var els = document.querySelectorAll('.reveal');
+        for (var j = 0; j < els.length; j++) els[j].classList.add('pre');
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.12 });
+        for (var k = 0; k < els.length; k++) io.observe(els[k]);
+      }
+    })();
+  </script>
+</body>
+</html>
